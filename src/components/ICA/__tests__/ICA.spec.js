@@ -9,7 +9,9 @@ import React from 'react';
 import renderWithinLandmark from '../../../../config/jest/helpers/renderWithinLandmark';
 
 import { ICA } from '../../..';
-import { Locales } from '../ICA';
+import { Locales, namespace } from '../ICA';
+
+const sizes = ['lg', 'xlg'];
 
 describe('ICA', () => {
   test('should have no Axe or DAP violations', async () => {
@@ -78,6 +80,18 @@ describe('ICA', () => {
     );
     expect(queryByText('%')).toBeVisible();
   });
+
+  test('should render trending arrow', () => {
+    const { container } = render(<ICA trending />);
+    expect(container.querySelector('svg')).toBeVisible();
+  });
+
+  sizes.forEach(size =>
+    test(`should apply correct class when \`size\` is set to '${size}'`, () => {
+      const { container } = render(<ICA size={size} />);
+      expect(container.firstElementChild).toHaveClass(`${namespace}--${size}`);
+    })
+  );
 
   Locales.forEach(locale =>
     test(`should accept '${locale}' locale`, () => {
